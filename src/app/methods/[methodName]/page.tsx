@@ -8,8 +8,9 @@ import { fetcher } from '@/lib/api';
 import PageHeader from '@/components/layout/PageHeader';
 import { formatNumber, formatPValue } from '@/lib/formatters';
 import { TIER_COLORS } from '@/lib/constants';
+import ProteogroupHeatmap from '@/components/visualize/ProteogroupHeatmap';
 
-type Tab = 'overview' | 'groups' | 'disease';
+type Tab = 'overview' | 'groups' | 'heatmap' | 'disease';
 
 interface MethodDetailResponse {
   metadata: {
@@ -95,6 +96,7 @@ export default function MethodDetailPage() {
   const tabs: { key: Tab; label: string }[] = [
     { key: 'overview', label: 'Overview' },
     { key: 'groups', label: `Proteogroups${groups ? ` (${groups.length})` : ''}` },
+    { key: 'heatmap', label: 'Heatmap' },
     { key: 'disease', label: 'Disease Associations' },
   ];
 
@@ -366,6 +368,19 @@ export default function MethodDetailPage() {
             </div>
           ) : groups ? (
             <div className="text-sm text-slate-400">No groups found for this method.</div>
+          ) : (
+            <div className="text-sm text-slate-400">Loading groups...</div>
+          )}
+        </div>
+      )}
+
+      {/* Heatmap tab */}
+      {activeTab === 'heatmap' && (
+        <div>
+          {groups && groups.length > 0 ? (
+            <ProteogroupHeatmap groups={groups} methodName={decoded} />
+          ) : groups ? (
+            <div className="text-sm text-slate-400">No group data available.</div>
           ) : (
             <div className="text-sm text-slate-400">Loading groups...</div>
           )}

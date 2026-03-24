@@ -7,6 +7,7 @@ import { fetcher } from '@/lib/api';
 import PageHeader from '@/components/layout/PageHeader';
 import { formatNumber, formatPValue, formatCohensD } from '@/lib/formatters';
 import { TIER_COLORS, DISEASE_DISPLAY_NAMES } from '@/lib/constants';
+import DiseaseRadar from '@/components/visualize/DiseaseRadar';
 import type { ProteogroupDetail } from '@/lib/types';
 
 export default function ProteogroupDetailPage() {
@@ -192,6 +193,11 @@ export default function ProteogroupDetailPage() {
 
         {/* Right column */}
         <div className="space-y-8">
+          {/* Disease fingerprint radar */}
+          {data.disease_associations && data.disease_associations.length > 0 && (
+            <DiseaseRadar diseases={data.disease_associations} />
+          )}
+
           {/* Disease associations */}
           {data.disease_associations &&
             data.disease_associations.length > 0 && (
