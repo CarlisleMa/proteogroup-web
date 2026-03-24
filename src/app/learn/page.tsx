@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiFetch } from '@/lib/api';
 import PageHeader from '@/components/layout/PageHeader';
@@ -16,6 +16,14 @@ const SUGGESTED_QUERIES = [
 ];
 
 export default function LearnPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><p className="text-slate-400">Loading...</p></div>}>
+      <LearnPageInner />
+    </Suspense>
+  );
+}
+
+function LearnPageInner() {
   const searchParams = useSearchParams();
   const initialContext = searchParams.get('context') ?? '';
 
