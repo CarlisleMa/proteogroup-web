@@ -30,18 +30,47 @@ export interface MethodDetail {
 /*  Proteogroup types                                                 */
 /* ------------------------------------------------------------------ */
 
+export interface ProteogroupProtein {
+  protein: string;
+  gene_name: string | null;
+  ridge_coef: number | null;
+}
+
+export interface ProteogroupFigure {
+  filename: string;
+  figure_type: string;
+  file_path: string;
+}
+
+export interface ProteogroupBiomarker {
+  composite_score: number | null;
+  tier: string | null;
+  predictive_importance: number | null;
+  disease_specificity: number | null;
+  pathway_membership: number | null;
+  network_centrality: number | null;
+  novelty_score: number | null;
+  cross_method_consistency: number | null;
+  tissue_interpretability: number | null;
+  top_proteins: unknown[] | null;
+}
+
 export interface ProteogroupDetail {
   method_name: string;
-  group_id: number;
+  group_id: number | string;
   n_proteins: number;
-  proteins: string[];
+  proteins: ProteogroupProtein[];
   enrichment: EnrichmentTerm[];
+  enrichment_summary: Record<string, unknown>;
   disease_associations: DiseaseAssociation[];
   cox_results: Record<string, unknown>[];
   string_ppi: Record<string, unknown>;
-  biomarker: BiomarkerNomination | null;
+  biomarker: ProteogroupBiomarker | null;
+  permutation_importance: Record<string, unknown>;
+  pathway_uniqueness: Record<string, unknown>;
+  correlation_structure: Record<string, unknown>;
   reviews: ReviewAnnotation[];
-  figures: string[];
+  figures: ProteogroupFigure[];
 }
 
 /* ------------------------------------------------------------------ */

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/layout/Navbar';
+import LearnFAB from '@/components/layout/LearnFAB';
 import './globals.css';
 
 const inter = Inter({
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans`}>
         <Navbar />
         <main className="pt-16 min-h-screen">{children}</main>
+        <LearnFAB />
       </body>
     </html>
   );

@@ -53,7 +53,7 @@ export default function ProteogroupDetailPage() {
       />
 
       {/* Biomarker badge */}
-      {data.biomarker && (
+      {data.biomarker && data.biomarker.tier && (
         <div className="mb-6">
           <span
             className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${
@@ -76,15 +76,18 @@ export default function ProteogroupDetailPage() {
             </h3>
             <div className="bg-white rounded-lg shadow-sm p-5">
               <div className="flex flex-wrap gap-2">
-                {data.proteins.map((p) => (
-                  <Link
-                    key={p}
-                    href={`/proteins/${encodeURIComponent(p)}`}
-                    className="inline-block px-2.5 py-1 bg-slate-50 text-slate-700 text-sm rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors font-mono"
-                  >
-                    {p}
-                  </Link>
-                ))}
+                {data.proteins.map((p) => {
+                  const name = typeof p === 'string' ? p : p.protein;
+                  return (
+                    <Link
+                      key={name}
+                      href={`/proteins/${encodeURIComponent(name)}`}
+                      className="inline-block px-2.5 py-1 bg-slate-50 text-slate-700 text-sm rounded-md hover:bg-blue-50 hover:text-blue-700 transition-colors font-mono"
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -226,7 +229,7 @@ export default function ProteogroupDetailPage() {
                     <tbody>
                       {data.disease_associations.map((d, idx) => (
                         <tr
-                          key={`${d.outcome}-${d.score_column}-${idx}`}
+                          key={`${d.outcome}-${idx}`}
                           className={`border-b border-slate-50 ${
                             idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
                           }`}
@@ -352,46 +355,39 @@ export default function ProteogroupDetailPage() {
                 Figures
               </h3>
               <div className="grid grid-cols-2 gap-3">
-                {data.figures.map((figPath) => (
-                  <div
-                    key={figPath}
-                    className="bg-white rounded-lg shadow-sm p-2 overflow-hidden"
-                  >
-                    <img
-                      src={`/figures/${figPath}`}
-                      alt={figPath}
-                      className="w-full h-auto rounded"
-                      loading="lazy"
-                    />
-                    <p className="text-xs text-slate-400 mt-1 px-1 truncate">
-                      {figPath}
-                    </p>
-                  </div>
-                ))}
+                {data.figures.map((fig) => {
+                  const filename = typeof fig === 'string' ? fig : fig.filename;
+                  const path = typeof fig === 'string' ? fig : fig.file_path;
+                  return (
+                    <div
+                      key={filename}
+                      className="bg-white rounded-lg shadow-sm p-2 overflow-hidden"
+                    >
+                      <img
+                        src={`/figures/${path}`}
+                        alt={filename}
+                        className="w-full h-auto rounded"
+                        loading="lazy"
+                      />
+                      <p className="text-xs text-slate-400 mt-1 px-1 truncate">
+                        {filename}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </section>
           )}
         </div>
       </div>
 
-      {/* Learn more CTA */}
-      <div className="mt-10 p-6 bg-white rounded-lg shadow-sm text-center">
-        <p className="text-sm text-slate-600 mb-3">
-          Want to learn more about this proteogroup?
-        </p>
-        <Link
-          href={`/learn?context=${encodeURIComponent(`${decodedMethod} group ${groupId}`)}`}
-          className="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Ask the Learn Agent
-        </Link>
-      </div>
+{/* Floating learn button added via global LearnFAB component */}
     </div>
   );
 }
 
-function ScoreBar({ label, value }: { label: string; value: number }) {
-  const pct = Math.min(Math.max(value * 100, 0), 100);
+function ScoreBar({ label, value }: { label: string; value: number | null }) {
+  const pct = Math.min(Math.max((value ?? 0) * 100, 0), 100);
   return (
     <div>
       <div className="flex justify-between text-sm mb-1">
