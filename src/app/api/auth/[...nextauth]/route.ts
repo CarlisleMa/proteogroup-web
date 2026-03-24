@@ -17,7 +17,7 @@ const handler = NextAuth({
         try {
           const res = await fetch(`${API_BASE}/api/review/login`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
             body: JSON.stringify({
               username: credentials.username,
               password: credentials.password,
