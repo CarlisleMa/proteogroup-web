@@ -1,5 +1,7 @@
 export const METHOD_FAMILIES = [
   'Coef',
+  'CAV',
+  'CAVtop',
   'Thresh',
   'PLS',
   'NMF',
