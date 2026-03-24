@@ -1,0 +1,162 @@
+/* ------------------------------------------------------------------ */
+/*  Method types                                                      */
+/* ------------------------------------------------------------------ */
+
+export interface MethodSummary {
+  method_name: string;
+  method_family: string;
+  k: number;
+  n_proteins_assigned: number;
+  mean_group_size: number;
+  group_size_cv: number;
+  age_mae: number;
+  age_r2: number;
+  pearson_r: number;
+  bootstrap_mean_ari: number;
+}
+
+export interface MethodDetail {
+  metadata: Record<string, unknown>;
+  age_prediction: Record<string, unknown>;
+  survival: Record<string, unknown>;
+  variance_explained: Record<string, unknown>;
+  correlation: Record<string, unknown>;
+  string_ppi: Record<string, unknown>;
+  enrichment_summary: EnrichmentTerm[];
+  top_nominations: BiomarkerNomination[];
+}
+
+/* ------------------------------------------------------------------ */
+/*  Proteogroup types                                                 */
+/* ------------------------------------------------------------------ */
+
+export interface ProteogroupDetail {
+  method_name: string;
+  group_id: number;
+  n_proteins: number;
+  proteins: string[];
+  enrichment: EnrichmentTerm[];
+  disease_associations: DiseaseAssociation[];
+  cox_results: Record<string, unknown>[];
+  string_ppi: Record<string, unknown>;
+  biomarker: BiomarkerNomination | null;
+  reviews: ReviewAnnotation[];
+  figures: string[];
+}
+
+/* ------------------------------------------------------------------ */
+/*  Protein types                                                     */
+/* ------------------------------------------------------------------ */
+
+export interface ProteinDetail {
+  protein: string;
+  gene_name: string;
+  uniprot_id: string;
+  function_text: string;
+  subcellular_location: string;
+  hpa: Record<string, unknown>;
+  pubmed: Record<string, unknown>[];
+  opentargets: Record<string, unknown>[];
+  assignments: Record<string, unknown>[];
+  coefficients: Record<string, unknown>[];
+}
+
+export interface ProteinSearchResult {
+  protein: string;
+  gene_name: string;
+  uniprot_id: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Disease & enrichment types                                        */
+/* ------------------------------------------------------------------ */
+
+export interface DiseaseAssociation {
+  method_name: string;
+  score_column: string;
+  outcome: string;
+  p_value: number;
+  cohens_d: number;
+  mean_case: number;
+  mean_control: number;
+  n_case: number;
+}
+
+export interface EnrichmentTerm {
+  source: string;
+  term_id: string;
+  term_name: string;
+  p_value: number;
+  term_size: number;
+  intersection_size: number;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Biomarker types                                                   */
+/* ------------------------------------------------------------------ */
+
+export interface BiomarkerNomination {
+  method_name: string;
+  pg_group: number;
+  composite_score: number;
+  tier: string;
+  predictive_importance: number;
+  disease_specificity: number;
+  pathway_membership: number;
+  network_centrality: number;
+  novelty_score: number;
+  cross_method_consistency: number;
+  tissue_interpretability: number;
+  top_proteins: string[];
+}
+
+/* ------------------------------------------------------------------ */
+/*  Review types                                                      */
+/* ------------------------------------------------------------------ */
+
+export interface ReviewAnnotation {
+  id: string;
+  reviewer: string;
+  biological_plausibility: number;
+  clinical_relevance: number;
+  notes: string;
+  tags: string[];
+  status: string;
+  created_at: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Chat types                                                        */
+/* ------------------------------------------------------------------ */
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  context_chunks?: string[];
+  created_at: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Dashboard types                                                   */
+/* ------------------------------------------------------------------ */
+
+export interface DashboardSummary {
+  n_methods: number;
+  n_proteins: number;
+  n_families: number;
+  n_diseases: number;
+  top_method: string;
+  tier_counts: Record<string, number>;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Pagination                                                        */
+/* ------------------------------------------------------------------ */
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  per_page: number;
+}
