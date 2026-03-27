@@ -37,12 +37,12 @@ export default function ProteinDetailPage() {
         breadcrumbs={[{ label: 'Proteins', href: '/proteins' }]}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in">
         {/* UniProt card - left 2/3 */}
         <div className="lg:col-span-2 space-y-8">
           {/* Function */}
-          <section className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-base font-semibold text-slate-900 mb-3">
+          <section className="bg-white rounded-xl shadow-card p-6">
+            <h3 className="text-base font-bold text-slate-900 mb-3">
               Function
             </h3>
             <p className="text-sm text-slate-600 leading-relaxed">
@@ -50,7 +50,7 @@ export default function ProteinDetailPage() {
             </p>
             {data.subcellular_location && (
               <p className="text-sm text-slate-500 mt-3">
-                <span className="font-medium">Location:</span>{' '}
+                <span className="font-semibold">Location:</span>{' '}
                 {data.subcellular_location}
               </p>
             )}
@@ -59,9 +59,14 @@ export default function ProteinDetailPage() {
                 href={`https://www.uniprot.org/uniprot/${data.uniprot_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block mt-3 text-sm text-blue-600 hover:text-blue-700"
+                className="inline-flex items-center gap-1 mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
-                View on UniProt &rarr;
+                View on UniProt
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
               </a>
             )}
           </section>
@@ -69,42 +74,31 @@ export default function ProteinDetailPage() {
           {/* Cross-method assignments */}
           {data.assignments && data.assignments.length > 0 && (
             <section>
-              <h3 className="text-base font-semibold text-slate-900 mb-3">
+              <h3 className="text-base font-bold text-slate-900 mb-3">
                 Cross-Method Assignments ({data.assignments.length})
               </h3>
-              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+              <div className="bg-white rounded-xl shadow-card overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                  <table className="w-full text-sm table-modern">
                     <thead>
-                      <tr className="border-b border-slate-100">
-                        <th className="text-left px-4 py-2.5 font-medium text-slate-500">
-                          Method
-                        </th>
-                        <th className="text-right px-4 py-2.5 font-medium text-slate-500">
-                          Group
-                        </th>
-                        <th className="text-right px-4 py-2.5 font-medium text-slate-500">
-                          Coefficient
-                        </th>
+                      <tr>
+                        <th className="text-left">Method</th>
+                        <th className="text-right">Group</th>
+                        <th className="text-right">Coefficient</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {data.assignments.map((a: Record<string, unknown>, idx: number) => (
-                        <tr
-                          key={`${a.method_name}-${a.group_id}`}
-                          className={`border-b border-slate-50 hover:bg-slate-50 ${
-                            idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
-                          }`}
-                        >
-                          <td className="px-4 py-2">
+                      {data.assignments.map((a: Record<string, unknown>) => (
+                        <tr key={`${a.method_name}-${a.group_id}`}>
+                          <td className="px-4 py-2.5">
                             <Link
                               href={`/methods/${encodeURIComponent(String(a.method_name))}`}
-                              className="text-blue-600 hover:text-blue-700"
+                              className="text-blue-600 hover:text-blue-700 font-medium"
                             >
                               {String(a.method_name)}
                             </Link>
                           </td>
-                          <td className="px-4 py-2 text-right">
+                          <td className="px-4 py-2.5 text-right">
                             <Link
                               href={`/proteogroups/${encodeURIComponent(String(a.method_name))}/${a.group_id}`}
                               className="text-blue-600 hover:text-blue-700 font-mono"
@@ -112,7 +106,7 @@ export default function ProteinDetailPage() {
                               {String(a.group_id)}
                             </Link>
                           </td>
-                          <td className="px-4 py-2 text-right font-mono text-slate-700">
+                          <td className="px-4 py-2.5 text-right font-mono text-slate-700">
                             {a.ridge_coef != null
                               ? formatNumber(a.ridge_coef as number, 4)
                               : '\u2014'}
@@ -129,42 +123,31 @@ export default function ProteinDetailPage() {
           {/* Coefficients */}
           {data.coefficients && data.coefficients.length > 0 && (
             <section>
-              <h3 className="text-base font-semibold text-slate-900 mb-3">
+              <h3 className="text-base font-bold text-slate-900 mb-3">
                 Model Coefficients
               </h3>
-              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+              <div className="bg-white rounded-xl shadow-card overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                  <table className="w-full text-sm table-modern">
                     <thead>
-                      <tr className="border-b border-slate-100">
-                        <th className="text-left px-4 py-2.5 font-medium text-slate-500">
-                          Method
-                        </th>
-                        <th className="text-right px-4 py-2.5 font-medium text-slate-500">
-                          Group
-                        </th>
-                        <th className="text-right px-4 py-2.5 font-medium text-slate-500">
-                          Weight
-                        </th>
+                      <tr>
+                        <th className="text-left">Method</th>
+                        <th className="text-right">Group</th>
+                        <th className="text-right">Weight</th>
                       </tr>
                     </thead>
                     <tbody>
                       {data.coefficients
                         .slice(0, 50)
                         .map((c: Record<string, unknown>, idx: number) => (
-                          <tr
-                            key={idx}
-                            className={`border-b border-slate-50 ${
-                              idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
-                            }`}
-                          >
-                            <td className="px-4 py-2 text-slate-700">
+                          <tr key={idx}>
+                            <td className="px-4 py-2.5 text-slate-700">
                               {String(c.method_name)}
                             </td>
-                            <td className="px-4 py-2 text-right font-mono text-slate-700">
+                            <td className="px-4 py-2.5 text-right font-mono text-slate-700">
                               {String(c.group_id ?? c.pg_group ?? '\u2014')}
                             </td>
-                            <td className="px-4 py-2 text-right font-mono text-slate-700">
+                            <td className="px-4 py-2.5 text-right font-mono text-slate-700">
                               {c.weight != null
                                 ? formatNumber(c.weight as number, 4)
                                 : '\u2014'}
@@ -182,23 +165,23 @@ export default function ProteinDetailPage() {
         {/* Right sidebar */}
         <div className="space-y-6">
           {/* Quick info */}
-          <div className="bg-white rounded-lg shadow-sm p-5">
+          <div className="card-accent p-5">
             <dl className="space-y-4 text-sm">
               <div>
-                <dt className="text-slate-500">Gene</dt>
-                <dd className="text-slate-900 font-medium font-mono mt-0.5">
+                <dt className="text-slate-400 font-medium">Gene</dt>
+                <dd className="text-slate-900 font-bold font-mono mt-0.5">
                   {data.gene_name || '\u2014'}
                 </dd>
               </div>
               <div>
-                <dt className="text-slate-500">UniProt ID</dt>
-                <dd className="text-slate-900 font-medium font-mono mt-0.5">
+                <dt className="text-slate-400 font-medium">UniProt ID</dt>
+                <dd className="text-slate-900 font-bold font-mono mt-0.5">
                   {data.uniprot_id || '\u2014'}
                 </dd>
               </div>
               <div>
-                <dt className="text-slate-500">Method Assignments</dt>
-                <dd className="text-slate-900 font-medium font-mono mt-0.5">
+                <dt className="text-slate-400 font-medium">Method Assignments</dt>
+                <dd className="text-slate-900 font-bold font-mono mt-0.5">
                   {data.assignments?.length ?? 0}
                 </dd>
               </div>
@@ -207,11 +190,11 @@ export default function ProteinDetailPage() {
 
           {/* HPA expression */}
           {data.hpa && Object.keys(data.hpa).length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm p-5">
-              <h3 className="text-sm font-semibold text-slate-900 mb-3">
+            <div className="bg-white rounded-xl shadow-card p-5">
+              <h3 className="text-sm font-bold text-slate-900 mb-3">
                 Tissue Expression (HPA)
               </h3>
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 {Object.entries(data.hpa)
                   .sort(
                     ([, a], [, b]) =>
@@ -222,7 +205,7 @@ export default function ProteinDetailPage() {
                   .map(([tissue, level]) => (
                     <div
                       key={tissue}
-                      className="flex justify-between text-xs"
+                      className="flex justify-between items-center text-xs"
                     >
                       <span className="text-slate-600 truncate mr-2">
                         {tissue}
@@ -236,14 +219,14 @@ export default function ProteinDetailPage() {
 
           {/* Literature */}
           {data.pubmed && (data.pubmed as unknown[]).length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm p-5">
-              <h3 className="text-sm font-semibold text-slate-900 mb-3">
+            <div className="bg-white rounded-xl shadow-card p-5">
+              <h3 className="text-sm font-bold text-slate-900 mb-3">
                 Literature
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {(data.pubmed as Record<string, unknown>[]).slice(0, 5).map((pub, idx) => (
                   <div key={idx} className="text-xs text-slate-600">
-                    <p className="font-medium">{String(pub.keyword ?? pub.gene_name ?? '')}</p>
+                    <p className="font-semibold">{String(pub.keyword ?? pub.gene_name ?? '')}</p>
                     <p className="text-slate-400">
                       {pub.count ? `${pub.count} publications` : ''}
                     </p>
@@ -254,13 +237,13 @@ export default function ProteinDetailPage() {
           )}
 
           {/* Learn more CTA */}
-          <div className="bg-white rounded-lg shadow-sm p-5 text-center">
-            <p className="text-sm text-slate-600 mb-3">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 text-center border border-blue-100/50">
+            <p className="text-sm text-slate-700 mb-3 font-medium">
               Learn more about this protein
             </p>
             <Link
               href={`/learn?context=${encodeURIComponent(decoded)}`}
-              className="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+              className="btn-primary inline-block"
             >
               Ask the Learn Agent
             </Link>
@@ -290,7 +273,7 @@ function ExpressionBadge({ level }: { level: string }) {
   };
   return (
     <span
-      className={`inline-block px-1.5 py-0.5 rounded text-xs font-medium ${
+      className={`inline-block px-2 py-0.5 rounded-md text-xs font-semibold ${
         colors[level] ?? 'bg-slate-100 text-slate-500'
       }`}
     >

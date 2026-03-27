@@ -11,7 +11,7 @@ export default function Badge({ tier, className = '' }: BadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colorClasses} ${className}`}
+      className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold shadow-sm ${colorClasses} ${className}`}
     >
       {displayLabel}
     </span>

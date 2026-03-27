@@ -42,6 +42,50 @@ const config: Config = {
           subtle: '#f1f5f9',
         },
       },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out',
+        'fade-in-up': 'fadeInUp 0.5s ease-out',
+        'slide-up': 'slideUp 0.4s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+        'shimmer': 'shimmer 2s linear infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.7' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      boxShadow: {
+        'glass': '0 4px 30px rgba(0, 0, 0, 0.05)',
+        'card': '0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06)',
+        'card-hover': '0 10px 25px rgba(0, 0, 0, 0.07), 0 4px 10px rgba(0, 0, 0, 0.05)',
+        'glow-blue': '0 0 20px rgba(59, 130, 246, 0.15)',
+        'glow-indigo': '0 0 20px rgba(99, 102, 241, 0.15)',
+      },
     },
   },
   plugins: [],

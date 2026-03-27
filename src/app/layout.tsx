@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Proteogroup Analysis',
+  title: 'Proteogroup Discovery',
   description:
     'Explore proteomic grouping methods, protein assignments, disease associations, and biomarker nominations from the UK Biobank proteomics study.',
 };
@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans`}>
+      <body className={`${inter.variable} font-sans bg-slate-50 antialiased`}>
         <Navbar />
         <main className="pt-16 min-h-screen">{children}</main>
         <LearnFAB />

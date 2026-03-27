@@ -104,11 +104,16 @@ function LearnPageInner() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-16rem)]">
         {/* Chat window - left 2/3 */}
-        <div className="lg:col-span-2 flex flex-col bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="lg:col-span-2 flex flex-col bg-white rounded-xl shadow-card overflow-hidden">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {messages.length === 0 && (
-              <div className="text-center py-12">
+              <div className="text-center py-12 animate-fade-in">
+                <div className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </div>
                 <p className="text-slate-400 text-sm mb-6">
                   Ask anything about the proteogroup discovery project.
                 </p>
@@ -117,7 +122,7 @@ function LearnPageInner() {
                     <button
                       key={q}
                       onClick={() => handleSend(q)}
-                      className="text-left px-4 py-2.5 text-sm text-slate-600 bg-slate-50 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                      className="text-left px-4 py-2.5 text-sm text-slate-600 bg-slate-50 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 border border-transparent hover:border-blue-100"
                     >
                       {q}
                     </button>
@@ -131,13 +136,13 @@ function LearnPageInner() {
                 key={msg.id}
                 className={`flex ${
                   msg.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
+                } animate-fade-in-up`}
               >
                 <div
-                  className={`max-w-[85%] px-4 py-3 rounded-lg text-sm leading-relaxed ${
+                  className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-50 text-slate-800'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl rounded-br-md'
+                      : 'bg-slate-50 text-slate-800 rounded-2xl rounded-bl-md'
                   }`}
                 >
                   <div className="whitespace-pre-wrap">{msg.content}</div>
@@ -146,8 +151,8 @@ function LearnPageInner() {
             ))}
 
             {isLoading && (
-              <div className="flex justify-start">
-                <div className="px-4 py-3 bg-slate-50 rounded-lg">
+              <div className="flex justify-start animate-fade-in">
+                <div className="px-4 py-3 bg-slate-50 rounded-2xl rounded-bl-md">
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" />
                     <div
@@ -180,13 +185,13 @@ function LearnPageInner() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about proteins, methods, disease associations..."
-                className="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="input-modern"
                 disabled={isLoading}
               />
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="btn-primary whitespace-nowrap"
               >
                 Send
               </button>
@@ -195,8 +200,8 @@ function LearnPageInner() {
         </div>
 
         {/* Context panel - right 1/3 */}
-        <div className="bg-white rounded-lg shadow-sm p-5 overflow-y-auto">
-          <h3 className="text-sm font-semibold text-slate-900 mb-4">
+        <div className="bg-white rounded-xl shadow-card p-5 overflow-y-auto">
+          <h3 className="text-sm font-bold text-slate-900 mb-4">
             Context Sources
           </h3>
 
@@ -205,15 +210,23 @@ function LearnPageInner() {
               {contextChunks.map((chunk) => (
                 <div
                   key={chunk.chunk_id}
-                  className="p-3 bg-slate-50 rounded-lg"
+                  className="p-3.5 bg-slate-50 rounded-xl border border-slate-100"
                 >
                   <p className="text-sm font-medium text-slate-700">
                     {chunk.title}
                   </p>
                   {chunk.similarity != null && (
-                    <p className="text-xs text-slate-400 mt-1">
-                      Relevance: {(chunk.similarity * 100).toFixed(0)}%
-                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
+                          style={{ width: `${chunk.similarity * 100}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-slate-400 font-mono">
+                        {(chunk.similarity * 100).toFixed(0)}%
+                      </span>
+                    </div>
                   )}
                 </div>
               ))}
@@ -226,7 +239,7 @@ function LearnPageInner() {
 
           {messages.length > 0 && (
             <div className="mt-6 pt-4 border-t border-slate-100">
-              <h4 className="text-xs font-semibold text-slate-500 uppercase mb-3">
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
                 Suggested Follow-ups
               </h4>
               <div className="space-y-1.5">
@@ -234,7 +247,7 @@ function LearnPageInner() {
                   <button
                     key={q}
                     onClick={() => handleSend(q)}
-                    className="block w-full text-left px-3 py-2 text-xs text-slate-600 bg-slate-50 rounded hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                    className="block w-full text-left px-3 py-2 text-xs text-slate-600 bg-slate-50 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"
                   >
                     {q}
                   </button>

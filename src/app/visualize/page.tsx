@@ -27,16 +27,16 @@ export default function VisualizePage() {
       />
 
       {/* Tab bar */}
-      <div className="border-b border-slate-200 mb-6">
+      <div className="border-b border-slate-200/80 mb-6">
         <div className="flex gap-0 -mb-px">
           {TABS.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-all duration-200 ${
                 activeTab === tab.key
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                  ? 'border-blue-600 text-blue-700'
+                  : 'border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-300'
               }`}
             >
               {tab.label}
@@ -46,10 +46,12 @@ export default function VisualizePage() {
       </div>
 
       {/* Tab content */}
-      {activeTab === 'landscape' && <MethodLandscape />}
-      {activeTab === 'biomarkers' && <BiomarkerExplorer />}
-      {activeTab === 'compare' && <MethodCompare />}
-      {activeTab === 'overlap' && <ProteinOverlap />}
+      <div className="animate-fade-in" key={activeTab}>
+        {activeTab === 'landscape' && <MethodLandscape />}
+        {activeTab === 'biomarkers' && <BiomarkerExplorer />}
+        {activeTab === 'compare' && <MethodCompare />}
+        {activeTab === 'overlap' && <ProteinOverlap />}
+      </div>
     </div>
   );
 }

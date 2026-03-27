@@ -27,7 +27,7 @@ export default function Tabs({ tabs, defaultTab, onChange }: TabsProps) {
   return (
     <div>
       {/* Tab list */}
-      <div className="border-b border-slate-200" role="tablist">
+      <div className="border-b border-slate-200/80" role="tablist">
         <div className="flex gap-0 -mb-px">
           {tabs.map((tab) => (
             <button
@@ -35,10 +35,10 @@ export default function Tabs({ tabs, defaultTab, onChange }: TabsProps) {
               role="tab"
               aria-selected={tab.key === activeKey}
               onClick={() => handleSelect(tab.key)}
-              className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-all duration-200 ${
                 tab.key === activeKey
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                  ? 'border-blue-600 text-blue-700'
+                  : 'border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-300'
               }`}
             >
               {tab.label}
@@ -48,7 +48,7 @@ export default function Tabs({ tabs, defaultTab, onChange }: TabsProps) {
       </div>
 
       {/* Tab panel */}
-      <div className="pt-4" role="tabpanel">
+      <div className="pt-5 animate-fade-in" role="tabpanel">
         {activeTab?.content}
       </div>
     </div>

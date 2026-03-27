@@ -83,15 +83,15 @@ export default function ReviewPage() {
           title="Expert Review"
           description="Review and annotate proteogroups, proteins, and methods with expert knowledge."
         />
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 pt-1">
           {reviewer ? (
             <>
-              <span className="text-sm text-slate-600">
+              <span className="text-sm text-slate-600 font-medium">
                 {reviewer.display_name}
               </span>
               <button
                 onClick={handleLogout}
-                className="text-sm text-slate-500 hover:text-slate-700"
+                className="text-sm text-slate-400 hover:text-slate-600 transition-colors"
               >
                 Sign out
               </button>
@@ -99,7 +99,7 @@ export default function ReviewPage() {
           ) : (
             <Link
               href="/review/login"
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+              className="btn-primary"
             >
               Sign in to review
             </Link>
@@ -109,19 +109,19 @@ export default function ReviewPage() {
 
       {/* Stats overview */}
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <div className="bg-white rounded-lg shadow-sm p-5">
-            <p className="text-sm text-slate-500">Total Reviews</p>
-            <p className="text-2xl font-semibold text-slate-900 mt-1">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 stagger-children">
+          <div className="card-accent p-5">
+            <p className="text-sm text-slate-400 font-medium">Total Reviews</p>
+            <p className="text-2xl font-bold text-slate-900 mt-1">
               {stats.total_annotations}
             </p>
           </div>
           {stats.by_entity_type.map((et) => (
-            <div key={et.entity_type} className="bg-white rounded-lg shadow-sm p-5">
-              <p className="text-sm text-slate-500 capitalize">
+            <div key={et.entity_type} className="card-accent p-5">
+              <p className="text-sm text-slate-400 font-medium capitalize">
                 {et.entity_type} Reviews
               </p>
-              <p className="text-2xl font-semibold text-slate-900 mt-1">
+              <p className="text-2xl font-bold text-slate-900 mt-1">
                 {et.count}
               </p>
               {et.avg_plausibility != null && (
@@ -138,7 +138,7 @@ export default function ReviewPage() {
         {/* My annotations */}
         {reviewer && (
           <section>
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">
+            <h2 className="text-lg font-bold text-slate-900 mb-4">
               My Annotations
             </h2>
             {myAnnotations && myAnnotations.length > 0 ? (
@@ -148,7 +148,7 @@ export default function ReviewPage() {
                 ))}
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-sm p-6 text-center">
+              <div className="bg-white rounded-xl shadow-card p-8 text-center">
                 <p className="text-sm text-slate-400">
                   No annotations yet. Visit a proteogroup or protein page to
                   add your expert review.
@@ -160,7 +160,7 @@ export default function ReviewPage() {
 
         {/* All annotations */}
         <section>
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">
+          <h2 className="text-lg font-bold text-slate-900 mb-4">
             Recent Annotations
           </h2>
           {annotations && annotations.length > 0 ? (
@@ -170,7 +170,7 @@ export default function ReviewPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow-sm p-6 text-center">
+            <div className="bg-white rounded-xl shadow-card p-8 text-center">
               <p className="text-sm text-slate-400">No annotations yet.</p>
             </div>
           )}
@@ -194,11 +194,11 @@ function AnnotationCard({ annotation: a }: { annotation: Annotation }) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-5">
+    <div className="bg-white rounded-xl shadow-card p-5 hover:shadow-card-hover transition-all duration-300">
       <div className="flex items-center justify-between mb-2">
         <Link
           href={entityLink(a.entity_type, a.entity_id)}
-          className="text-sm font-medium text-blue-600 hover:text-blue-700"
+          className="text-sm font-semibold text-blue-600 hover:text-blue-700"
         >
           {a.entity_type}: {a.entity_id}
         </Link>
@@ -224,11 +224,11 @@ function AnnotationCard({ annotation: a }: { annotation: Annotation }) {
       )}
 
       {a.tags && a.tags.length > 0 && (
-        <div className="flex gap-1.5 mt-2">
+        <div className="flex gap-1.5 mt-2.5">
           {a.tags.map((tag) => (
             <span
               key={tag}
-              className="inline-block px-2 py-0.5 bg-slate-100 text-slate-600 text-xs rounded-full"
+              className="inline-block px-2.5 py-0.5 bg-slate-50 text-slate-500 text-xs rounded-lg font-medium"
             >
               {tag}
             </span>

@@ -127,15 +127,15 @@ export default function MethodDetailPage() {
       />
 
       {/* Tab bar */}
-      <div className="flex items-center gap-1 mb-8 border-b border-slate-200">
+      <div className="flex items-center gap-1 mb-8 border-b border-slate-200/80">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-all duration-200 ${
               activeTab === tab.key
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
+                ? 'border-blue-600 text-blue-700'
+                : 'border-transparent text-slate-400 hover:text-slate-600'
             }`}
           >
             {tab.label}
@@ -145,15 +145,15 @@ export default function MethodDetailPage() {
 
       {/* Overview tab */}
       {activeTab === 'overview' && (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-fade-in">
           {/* Age prediction performance */}
           <section>
-            <h3 className="text-base font-semibold text-slate-900 mb-4">
+            <h3 className="text-base font-bold text-slate-900 mb-4">
               Age Prediction Performance
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 stagger-children">
               <MetricCard label="MAE" value={formatNumber(agePred.mae, 2)} unit="years" />
-              <MetricCard label="R²" value={formatNumber(agePred.r2, 3)} />
+              <MetricCard label="R\u00b2" value={formatNumber(agePred.r2, 3)} />
               <MetricCard label="Pearson r" value={formatNumber(agePred.pearson_r, 3)} />
               <MetricCard label="RMSE" value={formatNumber(agePred.rmse, 2)} unit="years" />
             </div>
@@ -161,10 +161,10 @@ export default function MethodDetailPage() {
 
           {/* Key metrics grid */}
           <section>
-            <h3 className="text-base font-semibold text-slate-900 mb-4">
+            <h3 className="text-base font-bold text-slate-900 mb-4">
               Key Metrics
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 stagger-children">
               <MetricCard
                 label="Survival C-index"
                 value={formatNumber(data.survival.c_index, 3)}
@@ -202,22 +202,22 @@ export default function MethodDetailPage() {
           {/* Top biomarker nominations */}
           {data.top_nominations && data.top_nominations.length > 0 && (
             <section>
-              <h3 className="text-base font-semibold text-slate-900 mb-4">
+              <h3 className="text-base font-bold text-slate-900 mb-4">
                 Top Biomarker Nominations
               </h3>
-              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <table className="w-full text-sm">
+              <div className="bg-white rounded-xl shadow-card overflow-hidden">
+                <table className="w-full text-sm table-modern">
                   <thead>
-                    <tr className="border-b border-slate-100">
-                      <th className="text-left px-4 py-3 font-medium text-slate-500">Group</th>
-                      <th className="text-left px-4 py-3 font-medium text-slate-500">Tier</th>
-                      <th className="text-right px-4 py-3 font-medium text-slate-500">Score</th>
-                      <th className="text-left px-4 py-3 font-medium text-slate-500">Top Proteins</th>
+                    <tr>
+                      <th className="text-left">Group</th>
+                      <th className="text-left">Tier</th>
+                      <th className="text-right">Score</th>
+                      <th className="text-left">Top Proteins</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.top_nominations.map((nom) => (
-                      <tr key={nom.pg_group} className="border-b border-slate-50 hover:bg-slate-50">
+                      <tr key={nom.pg_group}>
                         <td className="px-4 py-3">
                           <Link
                             href={`/proteogroups/${methodName}/${nom.pg_group}`}
@@ -228,7 +228,7 @@ export default function MethodDetailPage() {
                         </td>
                         <td className="px-4 py-3">
                           {nom.tier && (
-                            <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${TIER_COLORS[nom.tier] ?? 'bg-slate-100 text-slate-600'}`}>
+                            <span className={`inline-block px-2.5 py-1 rounded-lg text-xs font-semibold ${TIER_COLORS[nom.tier] ?? 'bg-slate-100 text-slate-600'}`}>
                               {nom.tier.replace(/_/g, ' ')}
                             </span>
                           )}
@@ -250,26 +250,23 @@ export default function MethodDetailPage() {
           {/* Enrichment summary per group */}
           {data.enrichment_summary && data.enrichment_summary.length > 0 && (
             <section>
-              <h3 className="text-base font-semibold text-slate-900 mb-4">
+              <h3 className="text-base font-bold text-slate-900 mb-4">
                 Pathway Enrichment by Group
               </h3>
-              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <table className="w-full text-sm">
+              <div className="bg-white rounded-xl shadow-card overflow-hidden">
+                <table className="w-full text-sm table-modern">
                   <thead>
-                    <tr className="border-b border-slate-100">
-                      <th className="text-left px-4 py-3 font-medium text-slate-500">Group</th>
-                      <th className="text-right px-4 py-3 font-medium text-slate-500">Enriched Terms</th>
-                      <th className="text-left px-4 py-3 font-medium text-slate-500">Top Pathway</th>
-                      <th className="text-right px-4 py-3 font-medium text-slate-500">p-value</th>
-                      <th className="text-left px-4 py-3 font-medium text-slate-500">Theme</th>
+                    <tr>
+                      <th className="text-left">Group</th>
+                      <th className="text-right">Enriched Terms</th>
+                      <th className="text-left">Top Pathway</th>
+                      <th className="text-right">p-value</th>
+                      <th className="text-left">Theme</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {data.enrichment_summary.map((e, idx) => (
-                      <tr
-                        key={e.pg_group}
-                        className={`border-b border-slate-50 ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}
-                      >
+                    {data.enrichment_summary.map((e) => (
+                      <tr key={e.pg_group}>
                         <td className="px-4 py-3">
                           <Link
                             href={`/proteogroups/${methodName}/${e.pg_group}`}
@@ -288,7 +285,7 @@ export default function MethodDetailPage() {
                           {formatPValue(e.top_pathway_p)}
                         </td>
                         <td className="px-4 py-3">
-                          <span className="inline-block px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs">
+                          <span className="inline-block px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-medium">
                             {e.dominant_theme?.replace(/_/g, ' ') || '\u2014'}
                           </span>
                         </td>
@@ -304,27 +301,24 @@ export default function MethodDetailPage() {
 
       {/* Groups tab */}
       {activeTab === 'groups' && (
-        <div>
+        <div className="animate-fade-in">
           {groups && groups.length > 0 ? (
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-              <table className="w-full text-sm">
+            <div className="bg-white rounded-xl shadow-card overflow-hidden">
+              <table className="w-full text-sm table-modern">
                 <thead>
-                  <tr className="border-b border-slate-100">
-                    <th className="text-left px-4 py-3 font-medium text-slate-500">Group</th>
-                    <th className="text-right px-4 py-3 font-medium text-slate-500">Proteins</th>
-                    <th className="text-left px-4 py-3 font-medium text-slate-500">Top Pathway</th>
-                    <th className="text-left px-4 py-3 font-medium text-slate-500">Theme</th>
-                    <th className="text-left px-4 py-3 font-medium text-slate-500">Tier</th>
-                    <th className="text-right px-4 py-3 font-medium text-slate-500">Score</th>
-                    <th className="text-right px-4 py-3 font-medium text-slate-500">Importance</th>
+                  <tr>
+                    <th className="text-left">Group</th>
+                    <th className="text-right">Proteins</th>
+                    <th className="text-left">Top Pathway</th>
+                    <th className="text-left">Theme</th>
+                    <th className="text-left">Tier</th>
+                    <th className="text-right">Score</th>
+                    <th className="text-right">Importance</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {groups.map((g, idx) => (
-                    <tr
-                      key={g.group_id}
-                      className={`border-b border-slate-50 hover:bg-slate-50 ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}
-                    >
+                  {groups.map((g) => (
+                    <tr key={g.group_id}>
                       <td className="px-4 py-3">
                         <Link
                           href={`/proteogroups/${methodName}/${g.group_id}`}
@@ -341,14 +335,14 @@ export default function MethodDetailPage() {
                       </td>
                       <td className="px-4 py-3">
                         {g.dominant_theme ? (
-                          <span className="inline-block px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs">
+                          <span className="inline-block px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-medium">
                             {g.dominant_theme.replace(/_/g, ' ')}
                           </span>
                         ) : '\u2014'}
                       </td>
                       <td className="px-4 py-3">
                         {g.tier ? (
-                          <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${TIER_COLORS[g.tier] ?? 'bg-slate-100 text-slate-600'}`}>
+                          <span className={`inline-block px-2.5 py-1 rounded-lg text-xs font-semibold ${TIER_COLORS[g.tier] ?? 'bg-slate-100 text-slate-600'}`}>
                             {g.tier.replace(/_/g, ' ')}
                           </span>
                         ) : '\u2014'}
@@ -376,7 +370,7 @@ export default function MethodDetailPage() {
 
       {/* Heatmap tab */}
       {activeTab === 'heatmap' && (
-        <div>
+        <div className="animate-fade-in">
           {groups && groups.length > 0 ? (
             <ProteogroupHeatmap groups={groups} methodName={decoded} />
           ) : groups ? (
@@ -388,7 +382,11 @@ export default function MethodDetailPage() {
       )}
 
       {/* Disease tab */}
-      {activeTab === 'disease' && <DiseaseTab methodName={decoded} />}
+      {activeTab === 'disease' && (
+        <div className="animate-fade-in">
+          <DiseaseTab methodName={decoded} />
+        </div>
+      )}
     </div>
   );
 }
@@ -405,9 +403,9 @@ function MetricCard({
   subtitle?: string;
 }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-5">
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className="text-2xl font-semibold text-slate-900 mt-1">
+    <div className="card-accent p-5">
+      <p className="text-sm text-slate-400 font-medium">{label}</p>
+      <p className="text-2xl font-bold text-slate-900 mt-1.5">
         {value}
         {unit && <span className="text-sm font-normal text-slate-400 ml-1">{unit}</span>}
       </p>
@@ -424,20 +422,20 @@ function DiseaseTab({ methodName }: { methodName: string }) {
   return (
     <div>
       {diseases && diseases.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children">
           {diseases.map((d) => (
             <Link
               key={d.outcome}
               href={`/methods/${encodeURIComponent(methodName)}?tab=disease&outcome=${d.outcome}`}
-              className="bg-white rounded-lg shadow-sm p-5 hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl shadow-card p-5 hover:shadow-card-hover transition-all duration-300 group"
             >
-              <p className="text-sm font-medium text-slate-900">{d.display_name}</p>
-              <p className="text-2xl font-semibold text-slate-700 mt-2">
+              <p className="text-sm font-semibold text-slate-900">{d.display_name}</p>
+              <p className="text-2xl font-bold text-slate-700 mt-2">
                 {d.n_significant_pgs}
               </p>
-              <p className="text-xs text-slate-500 mt-1">significant proteogroups</p>
+              <p className="text-xs text-slate-400 mt-1">significant proteogroups</p>
               {d.best_cohens_d != null && (
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-400 mt-0.5">
                   best |d| = {formatNumber(Math.abs(d.best_cohens_d), 3)}
                 </p>
               )}

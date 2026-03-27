@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { useDebouncedSearch } from '@/hooks/useSearch';
 import { useProteinSearch } from '@/hooks/useProtein';
@@ -18,14 +17,20 @@ export default function ProteinsPage() {
       />
 
       {/* Search bar */}
-      <div className="max-w-xl mb-8">
+      <div className="max-w-xl mb-8 animate-fade-in">
         <div className="relative">
+          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </div>
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search proteins (e.g. GDF15, WFDC2, KLF4...)"
-            className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="input-modern pl-11"
           />
           {isLoading && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -34,7 +39,7 @@ export default function ProteinsPage() {
           )}
         </div>
         {query.length > 0 && query.length < 2 && (
-          <p className="text-xs text-slate-400 mt-1.5">
+          <p className="text-xs text-slate-400 mt-2">
             Type at least 2 characters to search.
           </p>
         )}
@@ -42,40 +47,28 @@ export default function ProteinsPage() {
 
       {/* Results */}
       {data && debouncedQuery.length >= 2 && (
-        <div>
-          <p className="text-sm text-slate-500 mb-4">
+        <div className="animate-fade-in">
+          <p className="text-sm text-slate-400 mb-4">
             {(data as any).length ?? data.items?.length ?? 0} result
             {((data as any).length ?? data.items?.length ?? 0) !== 1 ? 's' : ''}{' '}
             for &ldquo;{debouncedQuery}&rdquo;
           </p>
 
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="bg-white rounded-xl shadow-card overflow-hidden">
+            <table className="w-full text-sm table-modern">
               <thead>
-                <tr className="border-b border-slate-100">
-                  <th className="text-left px-4 py-3 font-medium text-slate-500">
-                    Protein
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-slate-500">
-                    Gene Name
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-slate-500">
-                    UniProt ID
-                  </th>
+                <tr>
+                  <th className="text-left">Protein</th>
+                  <th className="text-left">Gene Name</th>
+                  <th className="text-left">UniProt ID</th>
                 </tr>
               </thead>
               <tbody>
                 {(data.items ?? (data as any))?.map(
                   (
                     p: { protein: string; gene_name: string; uniprot_id: string },
-                    idx: number,
                   ) => (
-                    <tr
-                      key={p.protein}
-                      className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${
-                        idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
-                      }`}
-                    >
+                    <tr key={p.protein}>
                       <td className="px-4 py-3">
                         <Link
                           href={`/proteins/${encodeURIComponent(p.protein)}`}
@@ -93,7 +86,7 @@ export default function ProteinsPage() {
                             href={`https://www.uniprot.org/uniprot/${p.uniprot_id}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-700 text-xs"
+                            className="text-blue-600 hover:text-blue-700 text-xs font-mono"
                           >
                             {p.uniprot_id}
                           </a>
@@ -112,8 +105,14 @@ export default function ProteinsPage() {
 
       {/* Empty state */}
       {!query && (
-        <div className="text-center py-16">
-          <p className="text-slate-400 text-sm">
+        <div className="text-center py-20 animate-fade-in">
+          <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </div>
+          <p className="text-slate-500 text-sm max-w-sm mx-auto">
             Start typing to search across 1,958 proteins from the UK Biobank
             Olink Explore 3072 panel.
           </p>
