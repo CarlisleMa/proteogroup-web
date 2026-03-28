@@ -116,7 +116,7 @@ export default function useNetworkSimulation({
     // Create protein nodes — place around their group centroid
     // Display up to 50 proteins per group (sorted by importance); full list
     // stays on node.proteins for tooltips / detail panel.
-    const MAX_DISPLAY_PROTEINS = 50;
+    const MAX_DISPLAY_PROTEINS = 10;
     const simProteins: SimProtein[] = [];
     visibleNodes.forEach((node) => {
       const allProteins = node.proteins && node.proteins.length > 0
