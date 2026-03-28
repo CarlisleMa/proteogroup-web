@@ -4,7 +4,9 @@ const nextConfig = {
     remotePatterns: [],
   },
   env: {
-    API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_API_URL:
+      process.env.NEXT_PUBLIC_API_URL ||
+      'https://proteogroup-api-production.up.railway.app',
   },
 };
 
