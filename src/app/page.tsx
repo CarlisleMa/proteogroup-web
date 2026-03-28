@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import Link from 'next/link';
 import { fetcher } from '@/lib/api';
 import StatCard from '@/components/shared/StatCard';
+import ProteogroupNetwork from '@/components/dashboard/ProteogroupNetwork';
 import { TIER_COLORS, METHOD_FAMILY_COLORS } from '@/lib/constants';
 import { formatNumber } from '@/lib/formatters';
 import type { DashboardSummary, MethodSummary, PaginatedResponse } from '@/lib/types';
@@ -27,7 +28,7 @@ export default function DashboardPage() {
 
   return (
     <div>
-      {/* Hero section */}
+      {/* Hero section with interactive network graph */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white">
         {/* Decorative grid pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -38,19 +39,27 @@ export default function DashboardPage() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-20">
-          <div className="animate-fade-in-up">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              Proteogroup Discovery
-            </h1>
-            <p className="mt-3 text-lg text-blue-200/80 max-w-2xl leading-relaxed">
-              Exploring coordinated protein groups across 108 methods from
-              UK Biobank proteomics data.
-            </p>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
+          {/* Title row */}
+          <div className="flex items-center justify-between mb-5 animate-fade-in-up">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                Proteogroup Discovery
+              </h1>
+              <p className="mt-2 text-base text-blue-200/80 max-w-2xl leading-relaxed">
+                Top proteogroups from PG_Coef_k50 &mdash; colored by strongest disease association.
+                Hover for details, click to explore.
+              </p>
+            </div>
           </div>
 
-          {/* Quick stats overlaying hero */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+          {/* Network graph */}
+          <div className="animate-fade-in">
+            <ProteogroupNetwork />
+          </div>
+
+          {/* Quick stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
             {[
               { label: 'Methods', value: summary?.n_methods ?? '...', sub: 'across 11 families' },
               { label: 'Proteins', value: summary?.n_proteins ? summary.n_proteins.toLocaleString() : '...', sub: 'Olink Explore 3072' },

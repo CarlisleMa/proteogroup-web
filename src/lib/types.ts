@@ -189,3 +189,55 @@ export interface PaginatedResponse<T> {
   page: number;
   per_page: number;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Network graph types                                                */
+/* ------------------------------------------------------------------ */
+
+export interface NetworkNodeDisease {
+  outcome: string;
+  cohens_d: number | null;
+  p_value: number | null;
+  n_case: number | null;
+}
+
+export interface NetworkNode {
+  group_id: number;
+  n_proteins: number;
+  composite_score: number | null;
+  tier: string | null;
+  top_proteins: string[];
+  dominant_theme: string | null;
+  top_pathway: string | null;
+  n_enriched_terms: number | null;
+  strongest_disease: string | null;
+  strongest_disease_d: number | null;
+  disease_associations: NetworkNodeDisease[];
+  ppi_enrichment_p: number | null;
+  avg_clustering: number | null;
+  mean_within_corr: number | null;
+  corr_ratio: number | null;
+  predictive_importance: number | null;
+  disease_specificity: number | null;
+  network_centrality: number | null;
+  // d3-force simulation fields (mutated at runtime)
+  x?: number;
+  y?: number;
+  vx?: number;
+  vy?: number;
+  fx?: number | null;
+  fy?: number | null;
+}
+
+export interface NetworkEdge {
+  source: number | NetworkNode;
+  target: number | NetworkNode;
+  shared_theme: string | null;
+  weight: number;
+}
+
+export interface NetworkGraphData {
+  method_name: string;
+  nodes: NetworkNode[];
+  edges: NetworkEdge[];
+}

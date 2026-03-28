@@ -72,3 +72,24 @@ export const ENRICHMENT_SOURCES = [
 ] as const;
 
 export type EnrichmentSource = (typeof ENRICHMENT_SOURCES)[number];
+
+export const DISEASE_COLORS: Record<string, string> = {
+  death: '#1e293b',
+  esrd: '#dc2626',
+  hf: '#ef4444',
+  stroke: '#f97316',
+  mi: '#f59e0b',
+  af: '#eab308',
+  copd: '#22c55e',
+  diabetes: '#06b6d4',
+  dementia: '#8b5cf6',
+  alz: '#a78bfa',
+  parkinsons: '#6366f1',
+  cancer: '#ec4899',
+  hiv: '#10b981',
+  inherit: '#f472b6',
+  inflam: '#fb923c',
+  other: '#94a3b8',
+};
+
+export const NO_DISEASE_COLOR = '#64748b';

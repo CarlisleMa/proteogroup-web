@@ -12,9 +12,15 @@ export function useMethods(params?: {
   family?: string;
   page?: number;
 }) {
-  const searchParams = new URLSearchParams(
-    params as Record<string, string>,
-  ).toString();
+  const cleaned: Record<string, string> = {};
+  if (params) {
+    for (const [k, v] of Object.entries(params)) {
+      if (v !== undefined && v !== null && v !== '') {
+        cleaned[k] = String(v);
+      }
+    }
+  }
+  const searchParams = new URLSearchParams(cleaned).toString();
   return useSWR<PaginatedResponse<MethodSummary>>(
     `/api/methods?${searchParams}`,
     fetcher,
