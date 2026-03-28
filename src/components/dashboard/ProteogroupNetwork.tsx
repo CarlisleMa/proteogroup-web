@@ -191,7 +191,7 @@ export default function ProteogroupNetwork({ onMethodChange }: ProteogroupNetwor
 
   return (
     <>
-      <div ref={containerRef} className="relative w-full select-none">
+      <div ref={containerRef} className="relative w-full select-none overflow-hidden rounded-xl">
         {/* Controls */}
         <NetworkControls
           method={method}

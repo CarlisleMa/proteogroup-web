@@ -98,10 +98,10 @@ export default function useNetworkSimulation({
       return;
     }
 
-    // Pre-position group centroids in a circle
+    // Pre-position group centroids in a circle (compact)
     const cx = dims.width / 2;
     const cy = dims.height / 2;
-    const baseRadius = Math.min(dims.width, dims.height) * 0.3;
+    const baseRadius = Math.min(dims.width, dims.height) * 0.2;
     const angleStep = (2 * Math.PI) / visibleNodes.length;
 
     const initialCentroids = new Map<number, { cx: number; cy: number }>();
@@ -159,15 +159,18 @@ export default function useNetworkSimulation({
       }
     }
 
+    // Boundary padding — keep nodes inside the SVG
+    const pad = 30;
+
     // Build simulation
     const sim = forceSimulation<SimProtein>(simProteins)
-      .force('cluster', forceCluster(simProteins, liveCentroids, 0.12))
-      .force('charge', forceManyBody<SimProtein>().strength(-25).distanceMax(120))
-      .force('collide', forceCollide<SimProtein>().radius(8).strength(0.7))
-      .force('center', forceCenter(cx, cy).strength(0.05))
+      .force('cluster', forceCluster(simProteins, liveCentroids, 0.18))
+      .force('charge', forceManyBody<SimProtein>().strength(-18).distanceMax(80))
+      .force('collide', forceCollide<SimProtein>().radius(7).strength(0.8))
+      .force('center', forceCenter(cx, cy).strength(0.12))
       .alpha(1)
-      .alphaDecay(0.028)
-      .velocityDecay(0.35);
+      .alphaDecay(0.032)
+      .velocityDecay(0.4);
 
     // Inter-group centroid force (run as separate sim tick manually)
     const centroidSim = forceSimulation<CentroidNode>(centroidNodes)
@@ -175,13 +178,13 @@ export default function useNetworkSimulation({
         'link',
         forceLink<CentroidNode, CentroidLink>(centroidLinks)
           .id((d) => String(d.group_id))
-          .distance(180)
-          .strength(0.15),
+          .distance(100)
+          .strength(0.2),
       )
-      .force('charge', forceManyBody<CentroidNode>().strength(-300).distanceMax(dims.width * 0.5))
-      .force('center', forceCenter(cx, cy).strength(0.1))
+      .force('charge', forceManyBody<CentroidNode>().strength(-150).distanceMax(dims.width * 0.35))
+      .force('center', forceCenter(cx, cy).strength(0.15))
       .alpha(1)
-      .alphaDecay(0.03)
+      .alphaDecay(0.035)
       .stop(); // We'll tick manually
 
     setIsSimulating(true);
@@ -191,9 +194,17 @@ export default function useNetworkSimulation({
       // Tick centroid sim
       centroidSim.tick();
 
-      // Update live centroids from centroid nodes
+      // Clamp centroid nodes inside bounds
       for (const cn of centroidNodes) {
+        cn.x = Math.max(pad, Math.min(dims.width - pad, cn.x));
+        cn.y = Math.max(pad, Math.min(dims.height - pad, cn.y));
         liveCentroids.set(cn.group_id, { cx: cn.x, cy: cn.y });
+      }
+
+      // Clamp protein nodes inside bounds
+      for (const pn of simProteins) {
+        pn.x = Math.max(pad, Math.min(dims.width - pad, pn.x));
+        pn.y = Math.max(pad, Math.min(dims.height - pad, pn.y));
       }
 
       // Also recompute centroids from actual protein positions (blend)

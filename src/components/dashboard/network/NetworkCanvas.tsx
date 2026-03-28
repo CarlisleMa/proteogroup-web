@@ -47,10 +47,10 @@ export default function NetworkCanvas({
     const paths = new Map<number, string>();
     grouped.forEach((points, gid) => {
       if (points.length >= 3) {
-        const hull = computeSmoothedHull(points, 18);
+        const hull = computeSmoothedHull(points, 14);
         if (hull) paths.set(gid, hull);
       } else {
-        const ellipse = computeEllipsePath(points, 24);
+        const ellipse = computeEllipsePath(points, 18);
         if (ellipse) paths.set(gid, ellipse);
       }
     });
@@ -73,7 +73,7 @@ export default function NetworkCanvas({
   const centroidArray = Array.from(groupCentroids.values());
 
   return (
-    <svg width={width} height={height} className="overflow-visible">
+    <svg width={width} height={height} className="overflow-hidden">
       {/* Defs: per-group radial gradients + glow filter */}
       <defs>
         <filter id="glow">
