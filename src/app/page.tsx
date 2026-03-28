@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
 import { fetcher } from '@/lib/api';
@@ -10,6 +11,7 @@ import { formatNumber } from '@/lib/formatters';
 import type { DashboardSummary, MethodSummary, PaginatedResponse } from '@/lib/types';
 
 export default function DashboardPage() {
+  const [currentMethod, setCurrentMethod] = useState('PG_Coef_k50');
   const { data: summary } = useSWR<DashboardSummary>(
     '/api/dashboard',
     fetcher,
@@ -47,7 +49,7 @@ export default function DashboardPage() {
                 Proteogroup Discovery
               </h1>
               <p className="mt-2 text-base text-blue-200/80 max-w-2xl leading-relaxed">
-                Top proteogroups from PG_Coef_k50 &mdash; colored by strongest disease association.
+                Top proteogroups from <span className="text-blue-100 font-medium">{currentMethod}</span> &mdash; colored by strongest disease association.
                 Hover for details, click to explore.
               </p>
             </div>
@@ -55,7 +57,7 @@ export default function DashboardPage() {
 
           {/* Network graph */}
           <div className="animate-fade-in">
-            <ProteogroupNetwork />
+            <ProteogroupNetwork onMethodChange={setCurrentMethod} />
           </div>
 
           {/* Quick stats */}

@@ -194,6 +194,37 @@ export interface PaginatedResponse<T> {
 /*  Network graph types                                                */
 /* ------------------------------------------------------------------ */
 
+export interface NetworkProtein {
+  name: string;
+  ridge_coef: number | null;
+}
+
+export interface ProteinSimNode {
+  id: string;
+  protein_name: string;
+  ridge_coef: number | null;
+  group_id: number;
+  group_color: string;
+  x: number;
+  y: number;
+  vx?: number;
+  vy?: number;
+}
+
+export interface GroupCentroid {
+  group_id: number;
+  cx: number;
+  cy: number;
+  color: string;
+  node: NetworkNode;
+  proteinIds: string[];
+}
+
+export interface MethodFamily {
+  family: string;
+  methods: string[];
+}
+
 export interface NetworkNodeDisease {
   outcome: string;
   cohens_d: number | null;
@@ -207,6 +238,7 @@ export interface NetworkNode {
   composite_score: number | null;
   tier: string | null;
   top_proteins: string[];
+  proteins: NetworkProtein[];
   dominant_theme: string | null;
   top_pathway: string | null;
   n_enriched_terms: number | null;
