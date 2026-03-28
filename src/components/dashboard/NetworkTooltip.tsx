@@ -54,7 +54,7 @@ export default function NetworkTooltip({ protein, node, position, containerWidth
         </div>
         {protein.ridge_coef != null && (
           <div className="text-slate-500 mb-1">
-            Ridge coefficient:{' '}
+            Importance score:{' '}
             <strong className="text-slate-700 font-mono">
               {formatNumber(protein.ridge_coef, 4)}
             </strong>
